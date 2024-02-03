@@ -10,14 +10,11 @@ import Foundation
 
 class ConcentrationGame {
     
-    var cards = [Card]()
-    
     static var matches = 0
-    
     static var flips = 0
-    
+    var cards = [Card]()
     var indexOfAndOnlyFaceUpCard: Int?
-     
+    
     func chooseCard(at index: Int) {
         if !cards[index].isMatched {
             if !cards[index].isFaceUp { ConcentrationGame.flips += 1 }
@@ -46,5 +43,4 @@ class ConcentrationGame {
         }
         cards = cards.shuffled()
     }
-    
 }

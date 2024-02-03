@@ -9,9 +9,24 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var flipLabel: UILabel!
+    @IBOutlet weak public var matchesLabel: UILabel!
+    @IBOutlet var buttonCollection: [UIButton]!
+    
+    @IBAction func buttonAction(_ sender: UIButton) {
+        if let buttonIndex = buttonCollection.firstIndex(of: sender) {
+            game.chooseCard(at: buttonIndex)
+            updateViewFromModel()
+            flipLabel.text = "Flips: \(ConcentrationGame.flips)"
+            matchesLabel.text = "Matches: \(ConcentrationGame.matches)"
+            if ConcentrationGame.matches == ((buttonCollection.count + 1) / 2) {
+                winAlerting()
+            }
+        }
+    }
+    
     lazy var game = ConcentrationGame(numberOfPairsOfCards: (buttonCollection.count + 1) / 2)
     var emojiCollection = ["🦊","🐣","🦍","🦧","🧩","🌎","🦋","🦩","🦖","🐯","🐋","🐊"]
-    
     var emojiDictionary = [Int: String]()
     
     func emojiIdentifier(for card: Card) -> String {
@@ -39,35 +54,17 @@ class ViewController: UIViewController {
     }
     
     func winAlerting() {
-            let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
-            let titleAttributes = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 22)!, NSAttributedString.Key.foregroundColor: UIColor.white]
-            let titleString = NSAttributedString(string: "Congratulations!", attributes: titleAttributes)
-            let messageAttributes = [NSAttributedString.Key.font: UIFont(name: "Helvetica", size: 16)!, NSAttributedString.Key.foregroundColor: UIColor.white]
-            let messageString = NSAttributedString(string: "🐲You are the winner🐲", attributes: messageAttributes)
-            alert.setValue(titleString, forKey: "attributedTitle")
-            alert.setValue(messageString, forKey: "attributedMessage")
-            let quitAction = UIAlertAction(title: "Quit", style: .default, handler: {action in exit(0)})
-            alert.addAction(quitAction)
-            
-            self.present(alert, animated: true, completion: nil)
-    }
-    
-    @IBOutlet var buttonCollection: [UIButton]!
-    
-    @IBOutlet weak var flipLabel: UILabel!
-    
-    @IBOutlet weak public var matchesLabel: UILabel!
-    
-    @IBAction func buttonAction(_ sender: UIButton) {
-        if let buttonIndex = buttonCollection.firstIndex(of: sender) {
-            game.chooseCard(at: buttonIndex)
-            updateViewFromModel()
-            flipLabel.text = "Flips: \(ConcentrationGame.flips)"
-            matchesLabel.text = "Matches: \(ConcentrationGame.matches)"
-            if ConcentrationGame.matches == ((buttonCollection.count + 1) / 2) {
-                winAlerting()
-            }
-        }
+        let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        let titleAttributes = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 22)!, NSAttributedString.Key.foregroundColor: UIColor.white]
+        let titleString = NSAttributedString(string: "Congratulations!", attributes: titleAttributes)
+        let messageAttributes = [NSAttributedString.Key.font: UIFont(name: "Helvetica", size: 16)!, NSAttributedString.Key.foregroundColor: UIColor.white]
+        let messageString = NSAttributedString(string: "🐲You are the winner🐲", attributes: messageAttributes)
+        alert.setValue(titleString, forKey: "attributedTitle")
+        alert.setValue(messageString, forKey: "attributedMessage")
+        let quitAction = UIAlertAction(title: "Quit", style: .default, handler: {action in exit(0)})
+        alert.addAction(quitAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
